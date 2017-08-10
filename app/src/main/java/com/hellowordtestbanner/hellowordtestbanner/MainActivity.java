@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, "ca-app-pub-5676983055182772~3154571525");
+        MobileAds.initialize(this, "ca-app-pub-2261905453458376~7631096487");
 
 //        mAdView = (AdView) findViewById(R.id.ad_View);
 //        AdRequest adRequest = new AdRequest.Builder().build();
@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         mInterstitialAd = new InterstitialAd(this);
 //        test - ca-app-pub-3940256099942544/1033173712
-        mInterstitialAd.setAdUnitId("ca-app-pub-5676983055182772/8023754829");
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("33BE2250B43518CCDA7DE426D04EE232")
                 .build();
         mInterstitialAd.loadAd(adRequest);
 
@@ -42,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 //            mInterstitialAd.loadAd(adRequest);
 //        }
 
+        mInterstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded(){
+                mInterstitialAd.show();
+            }
+        });
+
         Button myButton = (Button) findViewById(R.id.retry_button);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 } else {
+                    AdRequest adRequest = new AdRequest.Builder()
+                            .build();
+                    mInterstitialAd.loadAd(adRequest);
+                    mInterstitialAd.show();
+
                     Log.d("TAG", "The interstitial wasn't loaded yet.");
                 }
             }
