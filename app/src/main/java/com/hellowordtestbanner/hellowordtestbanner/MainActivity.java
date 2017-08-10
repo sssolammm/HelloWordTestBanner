@@ -5,35 +5,90 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AdView mAdView;
+//    private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, "ca-app-pub-5676983055182772~7282283135");
+        MobileAds.initialize(this, "ca-app-pub-5676983055182772~3154571525");
 
-        mAdView = (AdView) findViewById(R.id.ad_View);
-        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView = (AdView) findViewById(R.id.ad_View);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
 
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .setGender(AdRequest.GENDER_FEMALE)
-//                .build();
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                .build();
-        mAdView.loadAd(adRequest);
+        mInterstitialAd = new InterstitialAd(this);
+//        test - ca-app-pub-3940256099942544/1033173712
+        mInterstitialAd.setAdUnitId("ca-app-pub-5676983055182772/8023754829");
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("33BE2250B43518CCDA7DE426D04EE232")
+                .build();
+        mInterstitialAd.loadAd(adRequest);
 
-        mAdView.setAdListener(new AdListener() {
+//        if (!mInterstitialAd.isLoading() && !mInterstitialAd.isLoaded()) {
+//            AdRequest adRequest = new AdRequest.Builder().build();
+//            mInterstitialAd.loadAd(adRequest);
+//        }
+
+        Button myButton = (Button) findViewById(R.id.retry_button);
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                }
+            }
+        });
+
+//        mAdView.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                // Code to be executed when an ad finishes loading.
+//                Log.i("Ads", "onAdLoaded");
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                // Code to be executed when an ad request fails.
+//                Log.i("Ads", "onAdFailedToLoad");
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                // Code to be executed when an ad opens an overlay that
+//                // covers the screen.
+//                Log.i("Ads", "onAdOpened");
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                // Code to be executed when the user has left the app.
+//                Log.i("Ads", "onAdLeftApplication");
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                // Code to be executed when when the user is about to return
+//                // to the app after tapping on an ad.
+//                Log.i("Ads", "onAdClosed");
+//            }
+//        });
+
+        mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
@@ -48,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
+                // Code to be executed when the ad is displayed.
                 Log.i("Ads", "onAdOpened");
             }
 
@@ -61,8 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdClosed() {
-                // Code to be executed when when the user is about to return
-                // to the app after tapping on an ad.
+                // Code to be executed when when the interstitial ad is closed.
                 Log.i("Ads", "onAdClosed");
             }
         });
@@ -88,30 +141,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when leaving the activity */
-    @Override
-    public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
-
-    /** Called when returning to the activity */
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-    }
-
-    /** Called before the activity is destroyed */
-    @Override
-    public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-        super.onDestroy();
-    }
+//    /** Called when leaving the activity */
+//    @Override
+//    public void onPause() {
+//        if (mAdView != null) {
+//            mAdView.pause();
+//        }
+//        super.onPause();
+//    }
+//
+//    /** Called when returning to the activity */
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mAdView != null) {
+//            mAdView.resume();
+//        }
+//    }
+//
+//    /** Called before the activity is destroyed */
+//    @Override
+//    public void onDestroy() {
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//        }
+//        super.onDestroy();
+//    }
 }
